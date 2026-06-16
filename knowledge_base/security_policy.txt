@@ -1,0 +1,5 @@
+Employees must use strong passwords.
+
+Passwords should be changed every 90 days.
+
+Sharing credentials is prohibited.
