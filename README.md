@@ -6,11 +6,11 @@
 
 
 
-Enterprise Knowledge Assistant is a Retrieval-Augmented Generation (RAG) chatbot built using Llama 3, LangChain, ChromaDB, and Streamlit.
+Enterprise Knowledge Assistant is a Retrieval-Augmented Generation (RAG) chatbot built using Llama 3, LangChain, ChromaDB, Sentence Transformers, and Streamlit.
 
 
 
-The application allows users to ask questions about company policies and receive accurate answers from a knowledge base with source attribution.
+The application allows users to ask questions about company policies and receive grounded answers from a knowledge base with source attribution.
 
 
 
@@ -22,21 +22,23 @@ The application allows users to ask questions about company policies and receive
 
 
 
-\* Local Llama 3 inference using Ollama
+\- Retrieval-Augmented Generation (RAG)
 
-\* Document loading and chunking
+\- Document loading and chunking
 
-\* Embedding generation using Sentence Transformers
+\- Semantic search
 
-\* ChromaDB vector database
+\- Sentence Transformer embeddings
 
-\* Semantic search retrieval
+\- ChromaDB vector database
 
-\* Source attribution
+\- Llama 3 local inference using Ollama
 
-\* Hallucination prevention
+\- Source attribution
 
-\* Interactive Streamlit chat interface
+\- Hallucination prevention
+
+\- Interactive Streamlit chat interface
 
 
 
@@ -48,19 +50,19 @@ The application allows users to ask questions about company policies and receive
 
 
 
-\* Python
+\- Python
 
-\* LangChain
+\- LangChain
 
-\* Ollama
+\- Ollama
 
-\* Llama 3
+\- Llama 3
 
-\* ChromaDB
+\- ChromaDB
 
-\* Sentence Transformers
+\- Sentence Transformers
 
-\* Streamlit
+\- Streamlit
 
 
 
@@ -72,113 +74,179 @@ The application allows users to ask questions about company policies and receive
 
 
 
-Documents
+```text
 
+Company Policy Documents
 
+&#x20;         ↓
 
-↓
+&#x20;      Chunking
 
+&#x20;         ↓
 
+&#x20;     Embeddings
 
-Chunking
+&#x20;         ↓
 
+&#x20;      ChromaDB
 
+&#x20;         ↓
 
-↓
+&#x20;  Semantic Retrieval
 
+&#x20;         ↓
 
+&#x20;   Relevant Context
 
-Embeddings
+&#x20;         ↓
 
+&#x20;      Llama 3
 
+&#x20;         ↓
 
-↓
+&#x20;   Answer + Sources
 
+Knowledge Base
 
 
-ChromaDB
 
+The application currently contains company policy documents covering:
 
 
-↓
 
+HR Policy
 
+Leave Policy
 
-Retriever
+Medical Benefits
 
+Security Policy
 
+Travel Policy
 
-↓
+Example Questions
 
+How many annual leave days do employees get?
 
+What is the probation period?
 
-Llama 3
+Who is covered under health insurance?
 
+When should passwords be changed?
 
+What is the maternity leave policy?
 
-↓
+Run the Application Locally
 
+1\. Install dependencies
 
+pip install -r requirements.txt
 
-Answer + Sources
+2\. Make sure Ollama is installed and Llama 3 is available
 
+ollama pull llama3
 
-
-\---
-
-
-
-\## Example Questions
-
-
-
-\* How many annual leave days do employees get?
-
-\* What is the probation period?
-
-\* Who is covered under health insurance?
-
-\* When should passwords be changed?
-
-\* What is the maternity leave policy?
-
-
-
-\---
-
-
-
-\## Run the Application
-
-
-
-Create Vector Database:
-
-
-
-python vector\_store.py
-
-
-
-Run Streamlit App:
-
-
+3\. Run the Streamlit application
 
 python -m streamlit run app.py
 
 
 
-\---
+The application will open in your browser.
 
 
 
-\## Author
+Project Structure
+
+enterprise-rag-assistant/
+
+│
+
+├── knowledge\_base/
+
+│   ├── hr\_policy.txt
+
+│   ├── leave\_policy.txt
+
+│   ├── medical\_benefits.txt
+
+│   ├── security\_policy.txt
+
+│   └── travel\_policy.txt
+
+│
+
+├── vector\_db/
+
+│   └── ChromaDB files
+
+│
+
+├── app.py
+
+├── ingest.py
+
+├── rag\_chat.py
+
+├── retriever.py
+
+├── vector\_store.py
+
+├── requirements.txt
+
+├── README.md
+
+└── .gitignore
+
+RAG Workflow
+
+Company policy documents are loaded from the knowledge base.
+
+Documents are split into smaller chunks.
+
+Chunks are converted into vector embeddings.
+
+Embeddings are stored in ChromaDB.
+
+A user asks a question.
+
+ChromaDB performs semantic similarity search.
+
+Relevant document chunks are retrieved.
+
+The retrieved context is passed to Llama 3.
+
+Llama 3 generates an answer based only on the retrieved context.
+
+The application displays the answer along with its source documents.
+
+Hallucination Prevention
+
+
+
+The application instructs the LLM to answer only using the retrieved knowledge-base context.
+
+
+
+If the required information is not available, the application responds:
+
+
+
+I don't have enough information in the knowledge base.
+
+
+
+This helps keep responses grounded in the available company policy documents.
+
+
+
+Author
 
 
 
 Mayuri Gulave
 
+
+
 AI Engineer | Data Scientist
-
-
 
