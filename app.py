@@ -9,7 +9,7 @@ from langchain_community.vectorstores import Chroma
 
 
 # =========================================================
-# PAGE CONFIG
+# PAGE CONFIGURATION
 # =========================================================
 
 st.set_page_config(
@@ -57,12 +57,8 @@ st.title("🏢 Enterprise Knowledge Assistant")
 
 st.markdown(
     """
-    Ask questions about company policies using:
-
-    **RAG (Retrieval-Augmented Generation)**  
-    **ChromaDB**  
-    **Semantic Search**  
-    **AI Language Models**
+    Ask questions about company policies and get answers
+    from the company knowledge base.
     """
 )
 
@@ -70,38 +66,13 @@ st.divider()
 
 
 # =========================================================
-# DISPLAY PREVIOUS MESSAGES
-# =========================================================
-
-for message in st.session_state.messages:
-
-    with st.chat_message(message["role"]):
-
-        st.write(message["content"])
-
-        if (
-            message["role"] == "assistant"
-            and "sources" in message
-            and message["sources"]
-        ):
-
-            st.markdown("**Sources:**")
-
-            for source in message["sources"]:
-
-                st.write(
-                    f"📄 {os.path.basename(source)}"
-                )
-
-
-# =========================================================
-# GENERATE ANSWER
+# GENERATE AI ANSWER
 # =========================================================
 
 def generate_answer(prompt):
 
     # -----------------------------------------------------
-    # Check for Gemini API key
+    # CHECK GEMINI API KEY
     # -----------------------------------------------------
 
     try:
@@ -112,7 +83,7 @@ def generate_answer(prompt):
 
     # -----------------------------------------------------
     # CLOUD MODE
-    # Gemini API
+    # GEMINI
     # -----------------------------------------------------
 
     if api_key:
@@ -131,7 +102,7 @@ def generate_answer(prompt):
 
     # -----------------------------------------------------
     # LOCAL MODE
-    # Ollama + Llama 3
+    # OLLAMA + LLAMA 3
     # -----------------------------------------------------
 
     response = ollama.chat(
@@ -148,7 +119,31 @@ def generate_answer(prompt):
 
 
 # =========================================================
-# USER INPUT
+# DISPLAY PREVIOUS CHAT MESSAGES
+# =========================================================
+
+for message in st.session_state.messages:
+
+    with st.chat_message(message["role"]):
+
+        st.write(message["content"])
+
+        if (
+            message["role"] == "assistant"
+            and message.get("sources")
+        ):
+
+            st.markdown("**Sources:**")
+
+            for source in message["sources"]:
+
+                st.write(
+                    f"📄 {os.path.basename(source)}"
+                )
+
+
+# =========================================================
+# USER QUESTION
 # =========================================================
 
 question = st.chat_input(
@@ -178,7 +173,7 @@ if question:
 
 
     # -----------------------------------------------------
-    # RETRIEVE RELEVANT DOCUMENTS
+    # RETRIEVE DOCUMENTS
     # -----------------------------------------------------
 
     with st.spinner("Searching knowledge base..."):
@@ -304,7 +299,7 @@ ANSWER:
 
 
     # -----------------------------------------------------
-    # GET SOURCES
+    # GET SOURCE DOCUMENTS
     # -----------------------------------------------------
 
     sources = list(
