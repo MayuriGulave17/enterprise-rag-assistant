@@ -7,3 +7,4 @@ chromadb
 sentence-transformers
 torch
 transformers
+google-genai
